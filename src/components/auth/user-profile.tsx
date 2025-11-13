@@ -32,9 +32,13 @@ export function UserProfile() {
   }
 
   const handleSignOut = async () => {
-    await signOut();
-    router.replace("/");
-    router.refresh();
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/")
+        }
+      }
+    })
   };
 
   return (
@@ -68,9 +72,9 @@ export function UserProfile() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/profile" className="flex items-center">
+          <Link href="/home" className="flex items-center">
             <User className="mr-2 h-4 w-4" />
-            Your Profile
+            Dashboard
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
