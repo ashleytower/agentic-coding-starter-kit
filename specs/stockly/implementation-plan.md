@@ -4,48 +4,105 @@ This is the master implementation plan with checkboxes to track progress across 
 
 ---
 
-## 📁 Phase 0: Setup & Cleanup ✅
+## 📁 Phase 0: Setup & Cleanup ✅ COMPLETE
 
 - [x] Create specs/stockly/ folder structure
 - [x] Create requirements.md
 - [x] Create implementation-plan.md (this file)
-- [ ] Create design-system.md
-- [ ] Delete boilerplate pages (chat, dashboard, profile)
-- [ ] Delete boilerplate components (starter-prompt-modal, setup-checklist)
-- [ ] Update package.json
-- [ ] Configure .env.local
-- [ ] Run lint and typecheck
+- [x] Create design-system.md
+- [x] Delete boilerplate pages (chat, dashboard, profile)
+- [x] Delete boilerplate components (starter-prompt-modal, setup-checklist)
+- [x] Update package.json
+- [x] Configure .env.local
+- [x] Run lint and typecheck
+
+**Completed:** 2025-11-13
+**Git Commit:** `ed396a7`
 
 ---
 
-## 🎨 Phase 1: Stockly Landing Page
+## 🎨 Phase 1: Stockly Landing Page ✅ COMPLETE
 
-- [ ] Update site-header.tsx with Stockly navigation
-- [ ] Create hero-section.tsx
-- [ ] Create problem-section.tsx
-- [ ] Create how-it-works-section.tsx
-- [ ] Create features-section.tsx
-- [ ] Create footer-cta-section.tsx
-- [ ] Update site-footer.tsx
-- [ ] Update app/page.tsx with all sections
-- [ ] Test mobile responsiveness
-- [ ] Run lint and typecheck
+- [x] Update site-header.tsx with Stockly navigation
+- [x] Create hero-section.tsx
+- [x] Create problem-section.tsx
+- [x] Create how-it-works-section.tsx
+- [x] Create features-section.tsx
+- [x] Create footer-cta-section.tsx
+- [x] Update site-footer.tsx
+- [x] Update app/page.tsx with all sections
+- [x] Test mobile responsiveness
+- [x] Run lint and typecheck
 
----
+**What Was Built:**
+- Modern Stockly landing page with hero, problem statement, features grid, and how-it-works sections
+- Added shadcn/ui components: accordion, input, sheet
+- Removed all boilerplate starter pages (chat, dashboard, profile)
+- Responsive design with mobile-first approach
+- Dark mode support throughout
 
-## 🔐 Phase 2: Authentication
-
-- [ ] Verify Better Auth configuration
-- [ ] Create (inventory)/layout.tsx
-- [ ] Create bottom-nav.tsx
-- [ ] Create placeholder inventory pages (home, list, agent)
-- [ ] Update site-header.tsx for authenticated users
-- [ ] Test sign-in/sign-out flow
-- [ ] Run lint and typecheck
+**Completed:** 2025-11-13
+**Git Commit:** `ed396a7`
 
 ---
 
-## 🗄️ Phase 3: Database & Google Sheets
+## 🔐 Phase 2: Authentication & Protected Routes ✅ COMPLETE
+
+- [x] Verify Better Auth configuration
+- [x] Create (inventory)/layout.tsx
+- [x] Create bottom-nav.tsx
+- [x] Create placeholder inventory pages (home, list, agent)
+- [x] Update site-header.tsx for authenticated users
+- [x] Test sign-in/sign-out flow
+- [x] Run lint and typecheck
+
+**What Was Built:**
+
+### Protected Route Structure
+- `src/app/(inventory)/layout.tsx` - Protected route group with session validation
+- `src/app/(inventory)/home/page.tsx` - Dashboard with stats, recent activity, low stock alerts
+- `src/app/(inventory)/list/page.tsx` - Pickup list with mock items
+- `src/app/(inventory)/agent/page.tsx` - Voice agent interface with chat UI
+
+### Authentication Enhancements
+- Enhanced Better Auth configuration (`src/lib/auth.ts`):
+  - 7-day session expiry
+  - Cookie caching for performance (5 min)
+  - Cross-subdomain cookies disabled
+- Proper session validation: `auth.api.getSession({ headers: await headers() })`
+- Null safety checks in protected pages
+- `isPending` state handling to prevent layout shift
+
+### Navigation
+- `src/components/bottom-nav.tsx` - Mobile-first bottom navigation (Home, List, Agent)
+- Updated `src/components/site-header.tsx`:
+  - Conditionally shows landing nav only when unauthenticated
+  - Logo links to `/home` for authenticated users
+  - Uses `isPending` to prevent flash of wrong state
+
+### Auth Flow Updates
+- Sign-in redirects to `/home` (was `/dashboard`)
+- User profile dropdown links to `/home` instead of `/profile`
+- Sign-out uses Better Auth callbacks with proper redirect
+
+### Database Setup
+- PostgreSQL database created: `postgres_dev`
+- Database user created: `dev_user`
+- Better Auth tables migrated: `user`, `session`, `account`, `verification`
+
+### Quality Assurance
+- All code reviewed by better-auth-expert agent
+- Follows Next.js 15 + Better Auth best practices
+- Zero linting errors
+- Zero TypeScript errors
+- Shadcn/ui component audit passed
+
+**Completed:** 2025-11-13
+**Git Commit:** `ed396a7`
+
+---
+
+## 🗄️ Phase 3: Database & Google Sheets ⏭️ NEXT
 
 ### Database
 - [ ] Update lib/schema.ts with inventory tables
@@ -250,8 +307,80 @@ This is the master implementation plan with checkboxes to track progress across 
 
 ---
 
-## Progress Tracking
+## 📊 Progress Tracking
 
-**Current Phase:** Phase 0 - Setup & Cleanup
-**Status:** In Progress
-**Last Updated:** 2025-11-12
+**Current Phase:** Phase 3 - Database & Google Sheets
+**Status:** Ready to Start
+**Last Updated:** 2025-11-13
+**Git Branch:** `master`
+**Latest Commit:** `ed396a7`
+
+### Completed Phases:
+- ✅ Phase 0: Setup & Cleanup
+- ✅ Phase 1: Stockly Landing Page
+- ✅ Phase 2: Authentication & Protected Routes
+
+### Next Session Quick Start:
+
+When starting a new Claude Code session on a different computer:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/ashleytower/agentic-coding-starter-kit.git
+   cd agentic-coding-starter-kit
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   pnpm install
+   ```
+
+3. **Set up environment variables:**
+   - Copy `.env.local` or create new one with required vars (see `.env.example`)
+   - Ensure PostgreSQL credentials match your setup
+
+4. **Set up database:**
+   ```bash
+   # Create database and user (if needed)
+   psql postgres -c "CREATE USER dev_user WITH PASSWORD 'dev_password';"
+   psql postgres -c "CREATE DATABASE postgres_dev OWNER dev_user;"
+
+   # Run migrations
+   POSTGRES_URL="postgresql://dev_user:dev_password@localhost:5432/postgres_dev" pnpm run db:migrate
+   ```
+
+5. **Start dev server:**
+   ```bash
+   pnpm dev
+   ```
+
+6. **Tell Claude:**
+   ```
+   I'm working on Stockly. We've completed Phase 1 (landing page) and Phase 2 (authentication).
+
+   Please read:
+   - specs/stockly/implementation-plan.md (this file)
+   - specs/stockly/requirements.md
+   - The latest git commit (ed396a7)
+
+   I'm ready to start Phase 3: Database & Google Sheets Integration.
+   ```
+
+### Key Files to Review:
+- `specs/stockly/requirements.md` - Full project requirements
+- `specs/stockly/design-system.md` - Design tokens and patterns
+- `src/app/(inventory)/` - Protected route structure
+- `src/lib/auth.ts` - Better Auth configuration
+- `src/components/bottom-nav.tsx` - Mobile navigation
+
+### Database Connection String:
+```
+POSTGRES_URL=postgresql://dev_user:dev_password@localhost:5432/postgres_dev
+```
+
+### Tech Stack Reference:
+- **Framework:** Next.js 15 with App Router, React 19, TypeScript
+- **Auth:** Better Auth with Google OAuth
+- **Database:** PostgreSQL with Drizzle ORM
+- **UI:** shadcn/ui + Tailwind CSS 4
+- **AI:** OpenRouter (not direct OpenAI)
